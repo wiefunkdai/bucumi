@@ -1,0 +1,58 @@
+##
+# PROJECT AKHIR SEMESTER PALCOMTECH
+# Mata Kuliah: Pemograman Web Dasar
+# Dosen : Bpk. Hendra Efendi
+# 
+# DAFTAR KELOMPOK :
+# - Stephanus Bagus Saputra
+# - Muhammd Ilham brosnansyah
+# - Muhamad Firdaus 
+# - M Ihsan Adrian 
+# - M. Chaidar Ramadhan 
+# - Mega
+#
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_headers.c>
+        Header set Service-Worker-Allowed "/"
+        Header add Access-Control-Allow-Origin: "*"
+        Header add Access-Control-Allow-Methods: "*"
+        Header add Access-Control-Allow-Headers: "*"
+        Header add Strict-Transport-Security "max-age=157680000"
+    </IfModule>
+    <IfModule mod_php4.c> 
+        php_flag register_globals Off
+    </IfModule>    
+    <IfModule mod_php5.c> 
+        php_flag allow_url_include Off
+        php_flag register_globals Off
+    </IfModule>    
+    <IfModule mod_php7.c>
+        php_value max_input_vars 5000
+    </IfModule>
+</IfModule>
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redirect Force HTTPS
+    #RewriteCond %{HTTPS} off
+    #RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
