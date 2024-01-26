@@ -123,7 +123,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
             );
             foreach($uploads as $name=>$attributes) {
                 $fileType=$attributes['type'];
-                $uploadFileName = $bookID.'-'.time().$acceptable[$fileType];
+                $uploadFileName = $bookID.$acceptable[$fileType];
                 if ($name=='bookfilepath') {
                     $uploadFileTemp = $uploadBookPath.'/'.$uploadFileName;
                 } else {
