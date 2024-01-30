@@ -35,6 +35,18 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
     $requirefields = mysqli_require_columns($tableName);
     $numericfields = mysqli_numeric_columns($tableName);
 
+    if (isset($model['usergoogleid'])) {
+        $openid = [];
+        $openid['googleid'] = $model['usergoogleid'];
+        $openid['googlephoto'] = $model['userphoto'];
+    }
+
+    if (isset($model['userfacebookid'])) {
+        $openid = [];
+        $openid['facebookid'] = $model['userfacebookid'];
+        $openid['facebookphoto'] = $model['userphoto'];
+    }
+
     $username = $model['username'];
     if ($SQLConnector->query( "SELECT * FROM $tableName WHERE username='$username';")->num_rows!=false) {
         $errors['username'] = 'ID Pengguna telah digunakan oleh pengguna lain!';
@@ -70,12 +82,55 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
         $errors['useremail'] = 'Format email salah!';
     }
 
-    if ((!empty($model['userpassword']) && trim($model['userpassword'])!='') && strlen(trim($model['userpassword']))<=6) {
+    if ((!empty($model['userpassword']) && trim($model['userpassword'])!='') && strlen(trim($model['userpassword']))<6) {
         $errors['userpassword'] = 'Kata Sandi minimal paling sedikit 6 karakter';
     }
 
     if (trim($model['userpassword']) != trim($model['userpasswordconfirm']) || (empty($model['userpasswordconfirm']) || trim($model['userpasswordconfirm'])=='')) {
         $errors['userpasswordconfirm'] = 'Konfirmasi sandi salah!';
+    }
+        
+    if (isset($model['userphoto']) && (trim($model['userphoto']) <> '' || !empty(trim($model['userphoto'])))) {
+        $streamPhotoFileUrl = $model['userphoto'];
+        $streamPhotoType = 'image/webp';
+        $streamPhotoAcceptable = array(
+            'image/jpeg'=>'.jpg',
+            'image/jpg'=>'.jpg',
+            'image/gif'=>'.gif',
+            'image/png'=>'.png'
+        );
+        try {
+            $streamPhotoFile = file_get_contents($model['userphoto']);
+            $streamPhotoType = @mime_content_type($streamPhotoFileUrl);
+        } catch(\Exception $e) {
+            $streamPhotoFile = file_get_contents($model['userphoto']);
+            $streamPhotoBuffer = @imagecreatefromstring($streamPhotoFile);
+            $fileInfo = finfo_open();
+            $streamPhotoType = finfo_buffer($fileInfo, $streamPhotoFile, FILEINFO_MIME_TYPE);            
+        }
+
+        if (isset($streamPhotoAcceptable[$streamPhotoType])) {
+            $uploadPhotoName = $model['username'].'-'.time().$streamPhotoAcceptable[$streamPhotoType];
+            $uploadPhotoFile = $uploadPhotoPath.'/'.$uploadPhotoName;
+    
+            try {        
+                $ch = curl_init($streamPhotoFileUrl);
+                $fp = fopen($uploadPhotoFile, 'wb');
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_exec($ch);
+                curl_close($ch);
+                fclose($fp);
+                $model['userphoto'] = $uploadPhotoName;
+            } catch(\Exception $e) {
+                try {
+                    file_put_contents($uploadPhotoFile, $streamPhotoFile);
+                    $model['userphoto'] = $uploadPhotoName;
+                } catch(\Exception $e) {
+                    unset($model['userphoto']);
+                }
+            }
+        }
     }
 
     if (array_key_exists('userphoto', $errors)) {
@@ -117,7 +172,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
         if ((!empty($uploads) && count($uploads) > 0) && (empty($errors) && count($errors) === 0)) {
             foreach($uploads as $name=>$attributes) {
                 $fileType=$attributes['type'];
-                $uploadPhotoName = $model['username'].$acceptable[$fileType];
+                $uploadPhotoName = $model['username'].'-'.time().$acceptable[$fileType];
                 $uploadPhotoFile = $uploadPhotoPath.'/'.$uploadPhotoName;
                 if (move_uploaded_file($attributes['tmp_name'], $uploadPhotoFile)) {
                     $model[$name] = $uploadPhotoName;

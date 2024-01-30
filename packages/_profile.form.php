@@ -158,9 +158,30 @@
         <?php endif; ?>
     </div>
   </div>
+<div class="col-md-12">
+    <h4 class="mb-3">Hubungkan Akun dengan:</h4>
+</div>
+  <div class="col-md-12 mb-3">
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center justify-content-md-start">
+    <button type="button" onclick="javascript:window.open('<?= create_url(isset($model['usergoogleid']) ? 'openid/google/exit' : 'openid/google') ?>','_self')" class="btn d-flex align-items-center justify-content-center px-4<?= isset($model['usergoogleid']) ? ' btn-outline-success' : ' btn-outline-bucumi' ?>">
+        <i class="bi fs-1 bi-google"></i>
+        <p class="d-flex flex-column flex-nowrap align-items-start ms-2 lh-1 mb-0">
+            <span class="fs-6"><?= isset($model['usergoogleid']) ? 'Putuskan' : 'Hubungkan' ?></span>
+            <span class="fs-4">Google</span>
+        </p>
+    </button>
+    <button type="button" onclick="javascript:window.open('<?= create_url(isset($model['userfacebookid']) ? 'openid/facebook/exit' : 'openid/facebook') ?>','_self')" class="btn d-flex align-items-center justify-content-center px-4<?= isset($model['userfacebookid']) ? ' btn-outline-success' : ' btn-outline-bucumi' ?>">
+        <i class="bi fs-1 bi-facebook"></i>
+        <p class="d-flex flex-column flex-nowrap align-items-start ms-2 lh-1 mb-0">
+            <span class="fs-6"><?= isset($model['userfacebookid']) ? 'Putuskan' : 'Hubungkan' ?></span>
+            <span class="fs-4">Facebook</span>
+        </p>
+    </button>
+    </div>
+  </div>
   <div class="col-12">
-    <div class="col-6 col-md-2 mx-auto">
-        <button name="submit" value="users" type="submit" class="btn btn-bucumi w-100">Simpan Data</button>
+    <div class="col-6 col-md-3 mx-auto">
+        <button name="submit" value="users" type="submit" class="btn btn-lg btn-bucumi w-100">Simpan Data</button>
     </div>
   </div>
 </form>

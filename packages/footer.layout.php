@@ -44,11 +44,14 @@
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <script type="text/javascript">
     (() => {
       'use strict';
       const forms = document.querySelectorAll('.needs-validation');
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
       Array.from(forms).forEach(form => {
         form.addEventListener('submit', event => {
@@ -81,7 +84,18 @@
           }          
         ]
       });
-
+      $(".select-paymentbank").select2({
+        templateResult: function(bankName) {
+          if (!bankName.id) {
+            return bankName.text;
+          }
+          var baseUrl = "<?= create_url('/resources/images/payments') ?>";
+          var paymentHtml = $(
+            '<span><img src="' + baseUrl + '/' + bankName.element.value.toLowerCase() + '-logo.svg" class="img-payment me-1" width="48" /> ' + bankName.text + '</span>'
+          );
+          return paymentHtml;
+        }
+      });
       $('.grid-responsive table tbody tr td').each(function(index, rowelement) {
         var headtable = $('.grid-responsive table thead tr').find('th:nth('+(index+1)+')');
         if (headtable.length > 0) {

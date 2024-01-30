@@ -42,12 +42,27 @@ if ($SQLQuery->num_rows === 0) {
 $model = $SQLQuery->fetch_array(MYSQLI_ASSOC);
 $pageTitle = "Buku ".ucfirst($model['booktitle']);
 $linkTags = explode(',',$model['bookkeyword']);
+
+
+$rentTableName = mysqli_table_name('rents');
+$rentModels = [];
+
+if (bucumi_auth() && $paramName!==false) {
+  $startDate = date('Y-m-d H:m:s');
+  $endDate = date('Y-m-d H:m:s', time() + 60 * 60);
+  $authUserID = $authUser['userid'];
+  $rentBookID = $model['bookid'];
+;  $SQLRentQuery = $SQLConnector->query("SELECT * FROM $rentTableName WHERE rentbookid='$rentBookID' AND rentuserid='$authUserID' AND (rentdatetime>='$startDate' AND rentdatetime<='$endDate');");
+  if ($SQLRentQuery->num_rows > 0) {
+    $rentModels = $SQLRentQuery->fetch_all(MYSQLI_ASSOC);
+  }
+}
 ?>
 <?php require_once('header.layout.php'); ?>
 <div class="container col-lg-12">
     <div class="row align-items-start g-lg-5 py-5">
       <div class="col-lg-7 text-center text-lg-start">
-        <?php if (bucumi_auth()): ?>
+        <?php if ((bucumi_auth() && $model['bookrentprice']<=0) || (bucumi_auth() && !empty($rentModels))): ?>
           <div class="h-100 p-3 border rounded-3 mb-3">
           <nav class="navbar bg-bucumi pagination">
             <form class="container-fluid wrap justify-content-between">
@@ -66,7 +81,7 @@ $linkTags = explode(',',$model['bookkeyword']);
             const canvas = document.getElementById('bucumi-pdfcanvas');
             if (canvas != null) {
               document.addEventListener('contextmenu', event => event.preventDefault());
-              var url = '<?= create_assetlink('downloads/'.$model['bookid'].'.pdf') ?>';
+              var url = '<?= create_assetlink('downloads/'.$model['bookfilepath']) ?>';
               var pdfjsLib = window['pdfjs-dist/build/pdf'];
               pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
@@ -153,6 +168,8 @@ $linkTags = explode(',',$model['bookkeyword']);
         <img src="<?= create_assetlink('books/'. (!empty($model['bookcover']) ? $model['bookcover'] : 'default.jpg')) ?>" class="bd-placeholder-img w-100 d-block bordered mb-3">
         <?php if (!bucumi_auth()): ?>
         <a href="<?= create_url('login') ?>" class="w-100 btn btn-lg btn-primary" type="submit">Login Terlebih Dahulu</a>  
+        <?php elseif($model['bookrentprice']>0 && count($rentModels)==0): ?>
+        <a href="<?= create_url('catalog/rent/'.$model['bookid']) ?>" class="w-100 btn btn-lg btn-primary" type="submit">Sewa: Rp <?= number_format($model['bookrentprice'],0,',','.') ?>/jam</a>  
         <?php endif; ?>
         <hr class="my-4">
         <div class="infoboxbook">

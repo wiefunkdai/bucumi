@@ -23,7 +23,7 @@ $tableName = mysqli_table_name('users');
 $errors = [];
 $valids = [];
 $model = [];
-$userBlocked = false;
+$userBlocked = isset($userBlocked) ? $userBlocked : false;
 
 if (isset($_POST['login-form'])) {
     if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
@@ -103,8 +103,8 @@ $model['userpassword'] = null;
     </div>
     <div class="col-12 col-md-12 d-grid gap-2 d-sm-flex align-items-center justify-content-sm-center">
         <p class="fs-5 text-center mb-0">Atau Login Dengan :</p>
-        <button type="button" class="btn btn-floating btn-outline-bucumi px-4 gap-3"><i class="bi bi-google"></i> Google</button>
-        <button type="button" class="btn btn-floating btn-outline-bucumi px-4"><i class="bi bi-facebook"></i> Facebook</button>
+        <button type="button" onclick="javascript:window.open('<?= create_url('openid/google') ?>','_self');" class="btn btn-floating btn-outline-bucumi px-4 gap-3"><i class="bi bi-google"></i> Google</button>
+        <button type="button" onclick="javascript:location.replace('<?= create_url('openid/facebook') ?>','_self');" class="btn btn-floating btn-outline-bucumi px-4"><i class="bi bi-facebook"></i> Facebook</button>
     </div>
 </form>
 </div>

@@ -67,7 +67,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
             $errors[$name] = 'Data wajib diinput!';
         } elseif (in_array($name, $numericfields) && !is_numeric($model[$name]) && !empty($model[$name]) && trim($model[$name]!='')) {
             $errors[$name] = 'Hanya boleh berupa angka!';
-        } elseif ((in_array($name, $requirefields) && !in_array($name, $nulledfields) && in_array($name, $numericfields) && $model[$name]<>0) && (empty($model[$name]) || trim($model[$name])=='')) {
+        } elseif ((in_array($name, $requirefields) && !in_array($name, $nulledfields) && in_array($name, $numericfields) && $model[$name]==0) && (empty($model[$name]) || trim($model[$name])=='')) {
             $errors[$name] = 'Data wajib diinput!';
         } else {
             if (in_array($name, $nulledfields) && (empty($model[$name]) || trim($model[$name]==''))) {

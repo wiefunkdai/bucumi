@@ -13,8 +13,6 @@
  * - Mega
  */
 
-if (isset($_SESSION['bucumi.authuser'])) {
-    unset($_SESSION['bucumi.authuser']);
-}
-
+@session_unset();
+@session_destroy();
 @header('Location: '.create_url('login'));

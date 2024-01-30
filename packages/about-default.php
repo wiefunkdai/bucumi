@@ -49,7 +49,7 @@ $pageTitle = "Tentang Bucumi";
       </li>
       <li class="icon-link mb-1 me-3" style="align-items: unset">
       <i class="bi bi-circle-fill"></i>
-        Mega
+        Mega Anita Gustiana (031190021)
       </li>
     </ul>
     

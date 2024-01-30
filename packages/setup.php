@@ -21,13 +21,15 @@ defined('ASSET_PATH') or define('ASSET_PATH', dirname(__DIR__).'/resources/media
 defined('APPLICATON_PATH') or define('APPLICATON_PATH', dirname(__DIR__));
 defined('TEMPLATE_PATH') or define('TEMPLATE_PATH', __DIR__);
 defined('TEMPLATE_ERROR_PAGE') or define('TEMPLATE_ERROR_PAGE', rtrim(TEMPLATE_PATH, '/').'/error-default.php');
-defined('WEBSITE_URI') or define('WEBSITE_URI', 'https://sdailover.web.id/campus/bucumi/');
-defined('ASSET_URI') or define('ASSET_URI', 'https://sdailover.web.id/campus/bucumi/resources/media/');
-/* ------ Later version using ------ */
+defined('WEBSITE_URI') or define('WEBSITE_URI', 'http://localhost/bucumi');
+defined('ASSET_URI') or define('ASSET_URI', 'http://localhost/bucumi/resources/media/');
 defined('GOOGLE_CLIENT_ID') or define('GOOGLE_CLIENT_ID', 'YOUR CLIENT ID');
 defined('GOOGLE_CLIENT_SECRET') or define('GOOGLE_CLIENT_SECRET', 'YOUR CLIENT SECRET');
 defined('GOOGLE_CLIENT_REDIRECT_URI') or define('GOOGLE_CLIENT_REDIRECT_URI', 'YOUR CALLBACK URL');
-/* --------------------------------- */
+defined('FACEBOOK_CLIENT_ID') or define('FACEBOOK_CLIENT_ID', 'YOUR CLIENT ID');
+defined('FACEBOOK_CLIENT_SECRET') or define('FACEBOOK_CLIENT_SECRET', 'YOUR CLIENT SECRET');
+defined('FACEBOOK_CLIENT_REDIRECT_URI') or define('FACEBOOK_CLIENT_REDIRECT_URI', 'YOUR CALLBACK URL');
+defined('FACEBOOK_GRAPH_API_VERSION') or define('FACEBOOK_GRAPH_API_VERSION', 'YOUR GRAPH API');
 defined('DB_HOST') or define('DB_HOST', 'localhost');
 defined('DB_USER') or define('DB_USER', 'root');
 defined('DB_PASS') or define('DB_PASS', '');
@@ -36,6 +38,7 @@ defined('DB_PREFIX') or define('DB_PREFIX', 'sd_');
 
 require(APPLICATON_PATH.'/vendor/autoload.php');
 require(__DIR__.'/GoogleService.php');
+require(__DIR__.'/FacebookService.php');
 
 function error_handler($level, $message, $file, $line) {
     throw new \ErrorException($message, $level, E_ERROR, $file, $line);

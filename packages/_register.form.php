@@ -15,10 +15,35 @@
 ?>
 <div class="col-12 col-md-6 d-block mx-auto pt-3">
     <form action="<?= create_url('register') ?>" method="post" class="row g-3 mb-3 mb-md-5" novalidate>
-        <h1 class="text-body-emphasis border-bottom text-center my-3 pb-3 mb-4 mb-md-5"><?= $pageTitle; ?></h1>
+        <?php if (isset($openid['googleid'])): ?>
+            <input type="hidden" name="usergoogleid" value="<?= $openid['googleid'] ?>">
+            <input type="hidden" name="userphoto" value="<?= $openid['googlephoto'] ?>">
+            <h1 class="text-body-emphasis border-bottom text-center my-3 pb-3 mb-0"><?= $pageTitle; ?></h1>
+            <div class="col-md-12 text-center mb-3 border-bottom pb-3 mb-3">
+                <p class="text-muted">Akun telah terhubung dengan:</p>
+                <div class="bi bi-google fs-1 text-bucumi"></div>
+                <p class="mt-2 mb-0 fw-bold text-bucumi"><?= $openid['googlename'] ?></p>
+            </div>
+        <?php elseif (isset($openid['facebookid'])): ?>
+            <input type="hidden" name="userfacebookid" value="<?= $openid['facebookid'] ?>">
+            <input type="hidden" name="userphoto" value="<?= $openid['facebookphoto'] ?>">
+            <h1 class="text-body-emphasis border-bottom text-center my-3 pb-3 mb-0"><?= $pageTitle; ?></h1>
+            <div class="col-md-12 text-center mb-3 border-bottom pb-3 mb-3">
+                <p class="text-muted">Akun telah terhubung dengan:</p>
+                <div class="bi bi-facebook fs-1 text-bucumi"></div>
+                <p class="mt-2 mb-0 fw-bold text-bucumi"><?= $openid['facebookname'] ?></p>
+            </div>
+        <?php else: ?>
+            <h1 class="text-body-emphasis border-bottom text-center my-3 pb-3"><?= $pageTitle; ?></h1>
+            <div class="col-12 col-md-12 d-grid gap-2 d-sm-flex align-items-center justify-content-sm-center mb-3">
+                <p class="fs-5 text-center mb-0">Hubungkan Akun :</p>
+                <button type="button" onclick="javascript:window.open('<?= create_url('openid/google') ?>','_self');" class="btn btn-floating btn-outline-bucumi px-4 gap-3"><i class="bi bi-google"></i> Google</button>
+                <button type="button" onclick="javascript:location.replace('<?= create_url('openid/facebook') ?>','_self');" class="btn btn-floating btn-outline-bucumi px-4"><i class="bi bi-facebook"></i> Facebook</button>
+            </div>
+        <?php endif; ?>
         <div class="col-md-12">
             <div class="form-floating mb-3 has-validation">
-                <input type="email" name="useremail" class="form-control<?= isset($errors['useremail']) ? ' is-invalid' : (isset($valids['useremail']) ? ' is-valid' : '') ?>" id="inputEmail" placeholder="Email" value="<?= $model['useremail'] ?? '' ?>">
+                <input type="email" name="useremail" class="form-control<?= isset($errors['useremail']) ? ' is-invalid' : (isset($valids['useremail']) ? ' is-valid' : '') ?>" id="inputEmail" placeholder="Email" value="<?= isset($openid['facebookmail']) ? $openid['facebookmail'] : (isset($openid['facebookmail']) ? $openid['facebookmail'] : (isset($model['useremail']) ? $model['useremail'] : '')) ?>">
                 <label for="inputEmail">Email</label>
                 <?php if(isset($errors['useremail']) || isset($valids['useremail'])): ?>
                     <div id="inputEmailFeedback" class="<?= isset($errors['useremail']) ? 'invalid-feedback' : 'valid-feedback' ?>">
@@ -40,7 +65,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-floating mb-3 has-validation">
-                <input type="text" name="userfullname" class="form-control<?= isset($errors['userfullname']) ? ' is-invalid' : (isset($valids['userfullname']) ? ' is-valid' : '') ?>" id="inputFullName" placeholder="Nama Lengkap" value="<?= $model['userfullname'] ?? '' ?>">
+                <input type="text" name="userfullname" class="form-control<?= isset($errors['userfullname']) ? ' is-invalid' : (isset($valids['userfullname']) ? ' is-valid' : '') ?>" id="inputFullName" placeholder="Nama Lengkap" value="<?= isset($openid['googlename']) ? $openid['googlename'] : (isset($openid['facebookname']) ? $openid['facebookname'] : (isset($model['userfullname']) ? $model['userfullname'] : '')) ?>">
                 <label for="inputFullName">Nama Lengkap</label>
                 <?php if(isset($errors['userfullname']) || isset($valids['userfullname'])): ?>
                     <div id="inputFullNameFeedback" class="<?= isset($errors['userfullname']) ? 'invalid-feedback' : 'valid-feedback' ?>">

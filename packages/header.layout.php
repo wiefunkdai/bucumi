@@ -17,17 +17,21 @@
     <base href="<?= create_url('/') ?>">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= isset($pageTitle) ? htmlentities($pageTitle) : ''; ?> - Bucumi (Pustaka Buku)</title>
+    <title><?= isset($pageTitle) ? htmlentities($pageTitle).' - ' : ''; ?>Bucumi (Pustaka Buku)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     <style type="text/css">
       :root {
         --bs-primary: #d45500ff;
         --bs-secondary: #d455009a;
+      }
+      .text-bucumi {
+        color: #d45500ff;
       }
       .bg-bucumi {
         background-color: #d45500ff;
@@ -98,7 +102,247 @@
         }
       }
 
-      .grid-responsive {
+.form-floating > .select2-container {
+  padding: 1rem 0.75rem;
+  border-radius: var(--bs-border-radius);
+  height: calc(3.5rem + calc(var(--bs-border-width) * 2));
+  min-height: calc(3.5rem + calc(var(--bs-border-width) * 2));
+  line-height: 1.25;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+.form-floating > .select2-container::-moz-placeholder {
+  color: transparent;
+}
+.form-floating > .select2-container::placeholder {
+  color: transparent;
+}
+.form-floating > .select2-container:not(:-moz-placeholder-shown) {
+  padding-top: 1.625rem;
+  padding-bottom: 2.256rem;
+}
+.form-floating > .select2-container:focus, 
+.form-floating > .select2-container:not(:placeholder-shown) {
+  padding-top: 1.625rem;
+  padding-bottom: 2.256rem;
+}
+.form-floating > .select2-container:-webkit-autofill {
+  padding-top: 1.625rem;
+  padding-bottom: .625rem;
+}
+.form-floating > .select2-container {
+  padding-top: 1.625rem;
+  padding-bottom: .625rem;
+}
+.form-floating > .select2-container:not(:focus) {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  display: block;
+  width: 100%;
+  padding: 1.625rem 2.25rem 2.256rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.form-floating > .select2-container:not(:-moz-placeholder-shown) ~ label {
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+.form-floating > .select2-container:focus ~ label,
+.form-floating > .select2-container:not(:placeholder-shown) ~ label,
+.form-floating > .select2-container ~ label {
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+.form-floating > .select2-container:not(:-moz-placeholder-shown) ~ label::after {
+  position: absolute;
+  inset: 1rem 0.375rem;
+  z-index: -1;
+  height: 1.5em;
+  content: "";
+  background-color: var(--bs-body-bg);
+  border-radius: var(--bs-border-radius);
+}
+.form-floating > .select2-container:focus ~ label::after,
+.form-floating > .select2-container:not(:placeholder-shown) ~ label::after,
+.form-floating > .select2-container ~ label::after {
+  position: absolute;
+  inset: 1rem 0.375rem;
+  z-index: -1;
+  height: 1.5em;
+  content: "";
+  background-color: var(--bs-body-bg);
+  border-radius: var(--bs-border-radius);
+}
+.form-floating > .select2-container:-webkit-autofill ~ label {
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+.form-floating > .select2-container:disabled ~ label {
+  color: #6c757d;
+}
+.form-floating > .select2-container:disabled ~ label::after {
+  background-color: var(--bs-secondary-bg);
+}
+.form-floating > .select2-container--default .select2-selection--single {
+  border: none;
+}
+.form-floating > .select2-container--open {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  display: block;
+  width: 100%;
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.form-floating > .select2-container--open[multiple],
+.form-floating > .select2-container--open[size]:not([size="1"]) {
+  padding-right: 0.75rem;
+  background-image: none;
+}
+.form-floating > .select2-container--open:disabled {
+  background-color: var(--bs-secondary-bg);
+}
+.form-floating > .select2-container--open:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 var(--bs-body-color);
+}
+
+.was-validated .form-control:valid ~ .select2-container, 
+.form-control.is-valid ~ .select2-container {
+  border-color: var(--bs-form-valid-border-color);
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-control:valid ~ .select2-container:focus, 
+.form-control.is-valid ~ .select2-container:focus {
+  border-color: var(--bs-form-valid-border-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);
+}
+.was-validated .form-select:valid ~ .select2-container, 
+.form-select.is-valid ~ .select2-container {
+  border-color: var(--bs-form-valid-border-color);
+}
+.was-validated .form-select:valid:not([multiple]):not([size]) ~ .select2-container, 
+.was-validated .form-select:valid:not([multiple])[size="1"] ~ .select2-container, 
+.form-select.is-valid:not([multiple]):not([size]) ~ .select2-container,
+.form-select.is-valid:not([multiple])[size="1"] ~ .select2-container {
+  --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  padding-right: 4.125rem;
+  background-position: right 0.75rem center, center right 2.25rem;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-select:valid ~ .select2-container:focus, 
+.form-select.is-valid ~ .select2-container:focus,
+.form-select.is-invalid ~ .select2-container--open {
+  border-color: var(--bs-form-valid-border-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);
+}
+
+.was-validated .form-control-color:valid ~ .select2-container, 
+.form-control-color.is-valid ~ .select2-container {
+  width: calc(3rem + calc(1.5em + 0.75rem));
+}
+
+.was-validated .input-group > .form-control:not(:focus):valid ~ .select2-container, 
+.input-group > .form-control:not(:focus).is-valid ~ .select2-container,
+.was-validated .input-group > .form-select:not(:focus):valid ~ .select2-container,
+.input-group > .form-select:not(:focus).is-valid ~ .select2-container {
+  z-index: 3;
+}
+
+.was-validated .form-control:invalid ~ .select2-container,
+.form-control.is-invalid ~ .select2-container {
+  border-color: var(--bs-form-invalid-border-color);
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-control:invalid ~ .select2-container:focus, 
+.form-control.is-invalid ~ .select2-container:focus,
+.form-control.is-invalid ~ .select2-container--open {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+}
+.was-validated .form-select:invalid ~ .select2-container,
+.form-select.is-invalid ~ .select2-container {
+  border-color: var(--bs-form-invalid-border-color);
+}
+.was-validated .form-select:invalid:not([multiple]):not([size]) ~ .select2-container, 
+.was-validated .form-select:invalid:not([multiple])[size="1"] ~ .select2-container, 
+.form-select.is-invalid:not([multiple]):not([size]) ~ .select2-container, 
+.form-select.is-invalid:not([multiple])[size="1"] ~ .select2-container {
+  --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  padding-right: 4.125rem;
+  background-position: right 0.75rem center, center right 2.25rem;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-select:invalid ~ .select2-container:focus, 
+.form-select.is-invalid ~ .select2-container:focus,
+.form-select.is-invalid ~ .select2-container--open {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+}
+.was-validated .form-control-color:invalid ~ .select2-container,
+.form-control-color.is-invalid ~ .select2-container {
+  width: calc(3rem + calc(1.5em + 0.75rem));
+}
+
+.select2-container--open .select2-dropdown--below {
+  top: 0;
+  border: var(--bs-border-width) solid #adb5bd;
+  border-radius: var(--bs-border-radius);
+  outline: 0;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.select2-container--open .select2-dropdown--below .select2-results ul li {
+  padding: 0.5rem 0.75rem;
+}
+.select2-dropdown, .select2-container--default .select2-search--dropdown .select2-search__field {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+.select2-selection--single .select2-selection__rendered {
+  padding-left: 0!important;
+  padding-right: 0!important;
+}
+.select2-container--default .select2-search--dropdown { 
+  padding: 0.75rem 0.5rem;
+}
+.select2-container--default .select2-results > .select2-results__options {
+  margin-bottom: 0.5rem;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  display: none;
+}
+
+.grid-responsive {
     margin-bottom: 2rem;
 }
 .grid-responsive table {
@@ -469,6 +713,7 @@ div.dataTables_wrapper div.dataTables_filter {
                 <li><a class="dropdown-item" href="<?= create_url('register') ?>">Register</a></li>
               <?php else: ?>
                 <li><h6 class="dropdown-header">Hi.. <?=  ucfirst($authUser['username'] ?? 'guest') ?></h6></li>
+                <li><a class="dropdown-item" href="<?= create_url('topup') ?>">Saldo: Rp <?= number_format($authUser['userbalance'],0,',','.') ?></a></li>
                 <li><a class="dropdown-item" href="<?= create_url($authUser['username']) ?>">Lihat Profil</a></li>
                 <?php if ($authUser['userrole']=='admin'): ?>
                   <li><a class="dropdown-item" href="<?= create_url('user/manage') ?>">Daftar Pengguna</a></li>

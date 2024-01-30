@@ -64,7 +64,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
             $errors[$name] = 'Data wajib diinput!';
         } elseif (in_array($name, $numericfields) && !is_numeric($model[$name]) && !empty($model[$name]) && trim($model[$name]!='')) {
             $errors[$name] = 'Hanya boleh berupa angka!';
-        } elseif ((in_array($name, $requirefields) && !in_array($name, $nulledfields) && in_array($name, $numericfields) && $model[$name]<>0) && (empty($model[$name]) || trim($model[$name])=='')) {
+        } elseif ((in_array($name, $requirefields) && !in_array($name, $nulledfields) && in_array($name, $numericfields) && $model[$name]==0) && (empty($model[$name]) || trim($model[$name])=='')) {
             $errors[$name] = 'Data wajib diinput!';
         } else {
             if (in_array($name, $nulledfields) && (empty($model[$name]) || trim($model[$name]==''))) {
@@ -84,7 +84,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
         $errors['useremail'] = 'Format email salah!';
     }
 
-    if ((!empty($model['userpassword']) && trim($model['userpassword'])!='') && strlen(trim($model['userpassword']))<=6) {
+    if ((!empty($model['userpassword']) && trim($model['userpassword'])!='') && strlen(trim($model['userpassword'])) < 6) {
         $errors['userpassword'] = 'Kata Sandi minimal paling sedikit 6 karakter';
     }
 
@@ -110,7 +110,7 @@ if (($model=$_POST) && (isset($model) && is_array($model) && !empty($model))) {
             if ((in_array($name, $requirefields) && !in_array($name, $numericfields) && !in_array($name, $nulledfields)) && $attributes['error']!==0) {
                 $errors[$name] = 'Berkas wajib di upload!';
             } else {
-                if ($attributes['error']===0) {
+                if ($attributes['error'] === 0) {
                     if(($attributes['size'] >= $maxsize) || ($attributes["size"] == 0)) {
                         $errors[$name] = 'Berkas terlalu besar! Berat berkas tidak boleh melebihi 2MB!';
                     } elseif(!in_array($fileType, array_keys($acceptable)) && (!empty($fileType))) {
